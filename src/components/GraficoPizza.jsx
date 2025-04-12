@@ -30,7 +30,7 @@ function GraficoPizza({ localidades }) {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '20px auto' }}>
+    <div style={{ maxWidth: '250px', margin: '20px auto' }}>
       <Chart type="pie" data={dadosGrafico} />
     </div>
   );
