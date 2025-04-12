@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Busca from "./components/Busca";
 import LocalidadeLista from "./components/LocalidadeLista";
+import GraficoPizza from "./components/GraficoPizza";
 import './App.css'
 
 function App() {
@@ -14,9 +15,9 @@ function App() {
       rua: dados.logradouro,
       bairro: dados.bairro,
       cidade: dados.localidade,
+      uf: dados.uf,
     };
 
-    // adiciona no topo
     setLocalidades((prev) => [novaLocalidade, ...prev]);
   };
 
@@ -24,6 +25,7 @@ function App() {
     <>
       <h1>Hello, P1</h1>
       <Busca onBuscar={adicionarLocalidade} />
+      <GraficoPizza localidades={localidades} />
       <LocalidadeLista localidades={localidades} />
     </>
   );
