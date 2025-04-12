@@ -1,45 +1,77 @@
 import { useState } from "react";
-import axios from "axios";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 
 function Busca({ onBuscar }) {
   const [cep, setCep] = useState("");
 
   const handleClick = async () => {
-    const cepLimpo = cep.replace(/\D/g, "");
-
-    if (!cepLimpo) {
-      alert("digite um cep");
+    if (!cep) {
+      alert("Digite um CEP válido.");
       return;
     }
 
     try {
-      const response = await axios.get(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+      const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const dados = await resposta.json();
 
-      if (response.data.erro) {
-        alert("cep invalido");
+      if (dados.erro) {
+        alert("CEP não encontrado.");
         return;
       }
 
-      console.log("Resposta da API viaCEP:", response.data);
-      onBuscar(response.data); // dispara pra cima
-
+      onBuscar(dados);
+      setCep(""); // limpa o campo após adicionar
     } catch (error) {
-      console.error("Erro na requisição:", error);
-      alert("erro ao buscar o cep");
+      alert("Erro ao buscar CEP.");
+      console.error(error);
     }
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Digite o CEP"
-        value={cep}
-        onChange={(e) => setCep(e.target.value)}
+    <div style={styles.container}>
+      <span className="p-input-icon-left" style={{ width: "100%" }}>
+        <i className="pi pi-search" />
+        <InputText
+          value={cep}
+          onChange={(e) => setCep(e.target.value)}
+          placeholder="Digite o CEP"
+          style={styles.input}
+        />
+      </span>
+      <Button
+        label="Adicionar localidade"
+        icon="pi pi-plus"
+        className="p-button-sm p-button-outlined"
+        onClick={handleClick}
+        style={styles.button}
       />
-      <button onClick={handleClick}>OK</button>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    maxWidth: "300px",
+    margin: "30px auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  input: {
+    width: "100%",
+    padding: "0.5rem",
+    fontSize: "1rem",
+  },
+  button: {
+    width: "100%",
+    marginTop: "10px",
+    height: "25px",
+    backgroundColor: "#007ad9",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+  },
+};
 
 export default Busca;
