@@ -5,17 +5,30 @@ import Busca from "./components/Busca";
 import LocalidadeLista from "./components/LocalidadeLista";
 import './App.css'
 
-
 function App() {
-  return (
-    <div>
-      <h1>Hello, P1</h1>
-      <Busca />
-      <LocalidadeLista />
-    </div>
+  const [localidades, setLocalidades] = useState([]);
 
+  const adicionarLocalidade = (dados) => {
+    const novaLocalidade = {
+      cep: dados.cep,
+      rua: dados.logradouro,
+      bairro: dados.bairro,
+      cidade: dados.localidade,
+    };
+
+    // adiciona no topo
+    setLocalidades((prev) => [novaLocalidade, ...prev]);
+  };
+
+  return (
+    <>
+      <h1>Hello, P1</h1>
+      <Busca onBuscar={adicionarLocalidade} />
+      <LocalidadeLista localidades={localidades} />
+    </>
   );
 }
 
 export default App;
+
 

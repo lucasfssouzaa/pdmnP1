@@ -1,11 +1,6 @@
 import { Card } from "primereact/card";
 
-function LocalidadeLista() {
-  const localidades = [
-    { cep: "04094-050", rua: "Avenida Pedro Álvares Cabral", bairro: "Parque Ibirapuera", cidade: "São Paulo - SP" },
-    { cep: "55592-970", rua: "Rua dos Navegantes", bairro: "Vila de Porto de Galinhas", cidade: "Ipojuca - PE" },
-  ];
-
+function LocalidadeLista({ localidades }) {
   return (
     <div>
       {localidades.map((localidade, index) => (

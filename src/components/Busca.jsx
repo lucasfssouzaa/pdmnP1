@@ -1,11 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 
-function Busca() {
+function Busca({ onBuscar }) {
   const [cep, setCep] = useState("");
 
   const handleClick = async () => {
-    const cepLimpo = cep.replace(/\D/g, ""); // remove traços, espaços etc
+    const cepLimpo = cep.replace(/\D/g, "");
 
     if (!cepLimpo) {
       alert("digite um cep");
@@ -14,13 +14,15 @@ function Busca() {
 
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-      
+
       if (response.data.erro) {
         alert("cep invalido");
         return;
       }
 
       console.log("Resposta da API viaCEP:", response.data);
+      onBuscar(response.data); // dispara pra cima
+
     } catch (error) {
       console.error("Erro na requisição:", error);
       alert("erro ao buscar o cep");
