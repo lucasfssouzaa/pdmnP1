@@ -1,15 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Component } from "react";
 import Busca from "./components/Busca";
 import LocalidadeLista from "./components/LocalidadeLista";
 import GraficoPizza from "./components/GraficoPizza";
-import './App.css'
+import './App.css';
 
-function App() {
-  const [localidades, setLocalidades] = useState([]);
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      localidades: [],
+    };
 
-  const adicionarLocalidade = (dados) => {
+    this.adicionarLocalidade = this.adicionarLocalidade.bind(this);
+  }
+
+  adicionarLocalidade(dados) {
     const novaLocalidade = {
       cep: dados.cep,
       rua: dados.logradouro,
@@ -18,19 +23,21 @@ function App() {
       uf: dados.uf,
     };
 
-    setLocalidades((prev) => [novaLocalidade, ...prev]);
-  };
+    this.setState((prevState) => ({
+      localidades: [novaLocalidade, ...prevState.localidades],
+    }));
+  }
 
-  return (
-    <>
-      <h1>Hello, P1</h1>
-      <Busca onBuscar={adicionarLocalidade} />
-      <GraficoPizza localidades={localidades} />
-      <LocalidadeLista localidades={localidades} />
-    </>
-  );
+  render() {
+    return (
+      <>
+        <h1>Hello, P1</h1>
+        <Busca onBuscar={this.adicionarLocalidade} />
+        <GraficoPizza localidades={this.state.localidades} />
+        <LocalidadeLista localidades={this.state.localidades} />
+      </>
+    );
+  }
 }
 
 export default App;
-
-

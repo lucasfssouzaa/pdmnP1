@@ -11,7 +11,7 @@ function LocalidadeLista({ localidades }) {
             <p><strong>Bairro:</strong> {localidade.bairro}</p>
             <p><strong>Cidade:</strong> {localidade.cidade}</p>
           </div>
-          </Card>
+        </Card>
       ))}
     </div>
   );

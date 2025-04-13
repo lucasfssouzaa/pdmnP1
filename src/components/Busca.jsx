@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { Component } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 
-function Busca({ onBuscar }) {
-  const [cep, setCep] = useState("");
+class Busca extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cep: "",
+    };
+  }
 
-  const handleClick = async () => {
+  handleInputChange = (e) => {
+    this.setState({ cep: e.target.value });
+  };
+
+  handleClick = async () => {
+    const { cep } = this.state;
     if (!cep) {
       alert("Digite um CEP válido.");
       return;
@@ -20,34 +30,36 @@ function Busca({ onBuscar }) {
         return;
       }
 
-      onBuscar(dados);
-      setCep(""); // limpa o campo após adicionar
+      this.props.onBuscar(dados);
+      this.setState({ cep: "" }); // limpa o campo
     } catch (error) {
       alert("Erro ao buscar CEP.");
       console.error(error);
     }
   };
 
-  return (
-    <div style={styles.container}>
-      <span className="p-input-icon-left" style={{ width: "100%" }}>
-        <i className="pi pi-search" />
-        <InputText
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
-          placeholder="Digite o CEP"
-          style={styles.input}
+  render() {
+    return (
+      <div style={styles.container}>
+        <span className="p-input-icon-left" style={{ width: "100%" }}>
+          <i className="pi pi-search" style={{marginLeft: "10px"}}/>
+          <InputText
+            value={this.state.cep}
+            onChange={this.handleInputChange}
+            placeholder="Digite o CEP"
+            style={styles.input}
+          />
+        </span>
+        <Button
+          label="Adicionar localidade"
+          icon="pi pi-plus"
+          className="p-button-sm p-button-outlined"
+          onClick={this.handleClick}
+          style={styles.button}
         />
-      </span>
-      <Button
-        label="Adicionar localidade"
-        icon="pi pi-plus"
-        className="p-button-sm p-button-outlined"
-        onClick={handleClick}
-        style={styles.button}
-      />
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 const styles = {
@@ -61,6 +73,7 @@ const styles = {
   input: {
     width: "100%",
     padding: "0.5rem",
+    paddingLeft: "2rem",
     fontSize: "1rem",
   },
   button: {
